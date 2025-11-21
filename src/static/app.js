@@ -20,11 +20,49 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
+        // Replace the previous innerHTML block for activityCard with the following to include signed-up students list
+        const formatDisplayName = (email) => {
+          const local = String(email).split("@")[0] || email;
+          return local
+            .replace(/[\._]/g, " ")
+            .split(" ")
+            .map((w) => (w.length ? w.charAt(0).toUpperCase() + w.slice(1) : ""))
+            .join(" ");
+        };
+
+        // Treat details.participants as already signed-up students; filter out falsy values
+        const signedUp = Array.isArray(details.participants) ? details.participants.filter(Boolean) : [];
+        const signedCount = signedUp.length;
+
+        let participantsHtml = "";
+        if (signedCount > 0) {
+          participantsHtml = "<ul class=\"participants\">";
+          participantsHtml += signedUp
+            .map((p) => {
+              const display = formatDisplayName(p);
+              const initials = display
+                .split(" ")
+                .map((s) => s.charAt(0))
+                .slice(0, 2)
+                .join("")
+                .toUpperCase();
+              return `<li class="participant"><span class="avatar">${initials}</span><span class="name" title="${p}">${display}</span></li>`;
+            })
+            .join("");
+          participantsHtml += "</ul>";
+        } else {
+          participantsHtml = `<p class="info">No students have signed up yet</p>`;
+        }
+
         activityCard.innerHTML = `
           <h4>${name}</h4>
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          <div class="participants-container">
+            <h5>Signed-up Students (${signedCount} / ${details.max_participants})</h5>
+            ${participantsHtml}
+          </div>
         `;
 
         activitiesList.appendChild(activityCard);
