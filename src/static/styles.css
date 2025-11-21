@@ -189,3 +189,33 @@ ul.participants {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Participants rendered as a simple container (no bullets) */
+.participants {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Delete/unregister button */
+.participant-delete {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #b00020;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  line-height: 1;
+}
+
+.participant-delete:hover {
+  background-color: rgba(176, 0, 32, 0.08);
+}
+
+.participant-delete:focus {
+  outline: 2px solid rgba(26, 35, 126, 0.2);
+}
